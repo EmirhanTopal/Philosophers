@@ -25,3 +25,12 @@ int	ft_atoi(char *str)
 	}
 	return (sign * result);
 }
+
+uint64_t	get_time()
+{
+	struct timeval time;
+	// 1 second = 1 000 milisecond
+	if (gettimeofday(&time, NULL))
+		return (0);
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+}

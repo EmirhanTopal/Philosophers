@@ -32,3 +32,11 @@ ThreadData_t thread_data_init(int *value, pthread_mutex_t *mutex)
 	};
 	return td;
 }
+
+int main()
+{
+	printf("%ld\n", get_time());
+	usleep(1000);
+	printf("%ld", get_time());
+    return 0;
+}
