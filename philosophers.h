@@ -13,7 +13,6 @@ typedef struct s_philo
 {
 	pthread_t		thread; // philo thread
 	int				id; // philo id
-	int				eating; // is philo eating (flag)
 	int				meals_eaten; // how many meals did philo eat
 	size_t			start_time;
 	size_t			last_meal; // last meal time (timestamp)
