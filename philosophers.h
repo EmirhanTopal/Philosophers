@@ -16,7 +16,7 @@ typedef struct s_philo
 	int				meals_eaten; // how many meals did philo eat
 	size_t			start_time;
 	size_t			last_meal; // last meal time (timestamp)
-	size_t			time_to_die; // parameter time
+	long			time_to_die; // parameter time
 	size_t			time_to_eat; // parameter time
 	size_t			time_to_sleep; // parameter time
 	int				num_of_philos; // paramter num of philos
@@ -51,5 +51,5 @@ void		init_philos(char **argv, t_philo *philos, pthread_mutex_t *forks, t_progra
 void		init_mutex(t_program *program, t_philo *philos);
 int			control_argv(char **argv);
 void		print_log(t_philo *philo, char *message);
-void		print_log_dead(t_philo *philo, char *message);
+void		print_log_dead(t_philo *philo);
 #endif

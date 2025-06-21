@@ -96,14 +96,14 @@ void	eat(t_philo *philo)
 	print_log(philo, "has taken a fork\n");
 	pthread_mutex_lock(philo->meal_lock);
 	philo->last_meal = get_time();
-	print_log(philo, "is eating\n");
 	pthread_mutex_unlock(philo->meal_lock);
+	print_log(philo, "is eating\n");
 	philo->meals_eaten++;
 	usleep(philo->time_to_eat * 1000);
-	philo->last_meal = get_time();
 	pthread_mutex_unlock(philo->l_fork);
 	pthread_mutex_unlock(philo->r_fork);
 }
+
 void	nap(t_philo *philo)
 {
 	print_log(philo, "is sleeping\n");
@@ -117,10 +117,7 @@ void	think(t_philo *philo)
 
 void	*philos_routine(void *arg_philo)
 {
-	int i;
 	t_philo *my_philo = (t_philo *)arg_philo;
-	
-	i = 0;
 	if (my_philo->id % 2 != 0)
 	{
 		usleep((my_philo->time_to_eat * 100) / 2);
@@ -146,6 +143,8 @@ void	*check_one_dead_monitor(void *philos)
 	int 	num_of_philos;
 	int 	num_times_to_eat;
 	int		all_meats_eaten;
+	long 	time_since_last_meal;
+
 
 	t_philo *my_philos = (t_philo *)philos;
 	num_of_philos = my_philos[0].num_of_philos;
@@ -156,16 +155,17 @@ void	*check_one_dead_monitor(void *philos)
 		i = 0;
 		while (i < num_of_philos)
 		{
+			time_since_last_meal = get_time() - my_philos[i].last_meal;
 			if (my_philos->num_times_to_eat != -1 && my_philos[i].meals_eaten >= num_times_to_eat)
 			{
 				i++;
 				continue;
 			}
-			if ((get_time() - my_philos[i].last_meal) > my_philos[i].time_to_die)
+			if (time_since_last_meal > my_philos[i].time_to_die)
 			{
 				pthread_mutex_lock(my_philos->dead_lock);
 				*(my_philos->dead) = 1;
-				print_log_dead(&my_philos[i], "is dead\n");
+				print_log_dead(&my_philos[i]);
 				pthread_mutex_unlock(my_philos->dead_lock);
 				return (NULL);
 			}
@@ -210,10 +210,10 @@ void	print_log(t_philo *philo, char *message)
 	pthread_mutex_unlock(philo->write_lock);
 }
 
-void	print_log_dead(t_philo *philo, char *message)
+void	print_log_dead(t_philo *philo)
 {
 	pthread_mutex_lock(philo->write_lock);
-	printf("%lu %d %s", get_time() - philo->start_time, philo->id, message);
+	printf("%lu %d is died\n", get_time() - philo->start_time, philo->id);
 	pthread_mutex_unlock(philo->write_lock);
 }
 
