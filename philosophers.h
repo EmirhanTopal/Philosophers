@@ -41,7 +41,6 @@ typedef struct s_program
 
 int			ft_atoi(char *str);
 uint64_t	get_time();
-void		create_threads(char **argv, t_philo *philos, pthread_t *observer_thread);
 void		*philos_routine(void *arg_philo);
 void		think(t_philo *philo);
 void		eat(t_philo *philo);
@@ -49,7 +48,11 @@ void		nap(t_philo *philo);
 void		init_forks(char **argv, pthread_mutex_t *forks);
 void		init_philos(char **argv, t_philo *philos, pthread_mutex_t *forks, t_program *program);
 void		init_mutex(t_program *program, t_philo *philos);
-int			control_argv(char **argv);
+void		destroy_all_mutex(t_program *program);
 void		print_log(t_philo *philo, char *message);
 void		print_log_dead(t_philo *philo);
+void		*check_one_dead_monitor(void *philos);
+void		create_threads(char **argv, t_philo *philos, pthread_t *observer_thread);
+void		join_threads(char **argv, t_philo *philos, pthread_t observer);
+
 #endif

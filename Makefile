@@ -1,4 +1,4 @@
-NAME = philosophers
+NAME = philo
 
 CC = clang
 CFLAGS = -fsanitize=thread -g -Wall -Wextra -Werror -pthread
